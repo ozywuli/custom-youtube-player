@@ -15,6 +15,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.easy-peasy-modal.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: initial;
 }
 
 .easy-peasy-modal__close {

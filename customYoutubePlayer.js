@@ -16,17 +16,18 @@
         function CustomYouTubePlayer(userOptions) {
 
             var defaultOptions = {
-                adaptiveVid: true,
-                adaptiveVidParent: window,
-                adaptiveVidDimensions: 0.9,
-
                 width: null,
                 height: null,
                 videoId: 'dQw4w9WgXcQ',
                 playerVars: {
                     controls: true,
                     start: 0
-                }
+                },
+
+                adaptiveVid: true,
+                adaptiveVidParent: window,
+                adaptiveVidDimensions: 0.9,
+                onVidEnd: null
             }
 
             var daOptions = $.extend(defaultOptions, userOptions);
@@ -64,6 +65,14 @@
 
             // ON PLAYER STATE CHANGE
             function onPlayerStateChange() {
+                var playerState = Player.getPlayerState()
+                
+
+                // WHEN THE VIDEO HAS ENDED
+                if (playerState === 0) {
+                    // TRIGGER THE `onVidEnd` CALLBACK
+                    daOptions.onVidEnd();
+                }
 
             }
 
