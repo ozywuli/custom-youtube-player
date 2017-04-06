@@ -7,7 +7,8 @@
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     var videoId;
-    var $youtubeIframe;
+    var $youtubeIframeWrapper = $('.youtube-player-wrapper');
+    var $youtubeIframe = $('#youtube-player-iframe');
     var $adaptiveEl;
 
     CustomYouTubePlayer = (function() {
@@ -15,6 +16,8 @@
         function CustomYouTubePlayer(userOptions) {
 
             var defaultOptions = {
+                adaptiveVid: true,
+                adaptiveVidDimensions: 0.9,
                 videoId: 'dQw4w9WgXcQ',
                 playerVars: {
                     controls: true,
@@ -23,8 +26,6 @@
             }
 
             var daOptions = $.extend(defaultOptions, userOptions);
-
-            console.log(daOptions);
 
             window.onYouTubeIframeAPIReady = function() {
 
@@ -42,6 +43,10 @@
 
             }
 
+            if (daOptions.adaptiveVid) {
+                $youtubeIframe.css('opacity', 0);
+            }
+
             function onPlayerReady() {
                 if (daOptions.adaptiveVid) {
                     turnOnAdaptiveVid();
@@ -53,7 +58,6 @@
             }
 
             function turnOnAdaptiveVid() {
-                console.log('wtf');
 
                 $youtubeIframe = $('#youtube-player-iframe');
                 $adaptiveEl = $(window);
@@ -66,21 +70,20 @@
                 });
 
                 function resizeIframe() {
-                    console.log( $adaptiveEl.height() / $adaptiveEl.width() );
 
-                    let newWidth = $adaptiveEl.width() * 0.9;
-                    let newHeight = $adaptiveEl.height() * 0.9;
+                    var newWidth = $adaptiveEl.width() * daOptions.adaptiveVidDimensions;
+                    var newHeight = $adaptiveEl.height() * daOptions.adaptiveVidDimensions;
 
                     if ( ($adaptiveEl.height() / $adaptiveEl.width()) > 0.5625 ) {
                         $youtubeIframe.each(function() {
-                            let $thisEl = $(this);
+                            var $thisEl = $(this);
                             $thisEl
                                 .width(newWidth)
                                 .height(newWidth * $thisEl.attr('data-aspectratio'))
                         });
                     } else {
                         $youtubeIframe.each(function() {
-                            let $thisEl = $(this);
+                            var $thisEl = $(this);
                             $thisEl
                                 .width(newHeight * $thisEl.attr('data-aspectratio-h'))
                                 .height(newHeight)
@@ -90,9 +93,11 @@
 
                 resizeIframe();
 
+                $youtubeIframe.css('opacity', 1);
+
                 $adaptiveEl.on('resize.ytModal', function() {
                     resizeIframe();
-                })
+                });
 
             }
 
