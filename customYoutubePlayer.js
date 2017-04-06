@@ -30,6 +30,7 @@
                 onVidEnd: null
             }
 
+            // https://api.jquery.com/jquery.extend/
             var daOptions = $.extend(defaultOptions, userOptions);
 
             window.onYouTubeIframeAPIReady = function() {
@@ -70,6 +71,10 @@
 
                 // WHEN THE VIDEO HAS ENDED
                 if (playerState === 0) {
+                    // https://github.com/nolimits4web/Swiper/blob/master/src/js/core.js
+                    // http://stackoverflow.com/questions/32246262/what-is-emit-javascript-function
+                    // http://stackoverflow.com/questions/1553342/custom-event-in-jquery-that-isnt-bound-to-a-dom-element#comment1417316_1556914
+                    // http://stackoverflow.com/questions/4942639/add-event-to-jquery-plugin
                     // TRIGGER THE `onVidEnd` CALLBACK
                     daOptions.onVidEnd();
                 }
