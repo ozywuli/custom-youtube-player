@@ -8,29 +8,26 @@
 </head>
 <body>
 
+<div class="youtube-player-wrapper">
+    <div id="youtube-player-iframe" class="youtube-player-iframe"></div>    
+</div>
 
-<div id="player"></div>
 
-    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src="script.js"></script>
+<script src="customYouTubePlayer.js"></script>
 
 <script>
-var player;
-function onYouTubeIframeAPIReady() {
-    Player = new YT.Player('player', {
-        width: 300,
-        height: 300,
-        videoId: 'ODn5-gb8gbQ',
-        playerVars: {
-            'controls': true,
-            'start': 0
-        },
-        events: {
-            'onReady': '',
-            'onStateChange': ''
-        }
-    });
-}
+
+var newCustomYouTubePlayer = new CustomYouTubePlayer({
+    adaptiveVid: true,
+    videoId: 'F-eMt3SrfFU',
+});
+
+
+
+
+
 </script>
     
 </body>
