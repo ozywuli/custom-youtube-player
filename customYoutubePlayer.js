@@ -17,7 +17,11 @@
 
             var defaultOptions = {
                 adaptiveVid: true,
+                adaptiveVidParent: window,
                 adaptiveVidDimensions: 0.9,
+
+                width: null,
+                height: null,
                 videoId: 'dQw4w9WgXcQ',
                 playerVars: {
                     controls: true,
@@ -30,6 +34,8 @@
             window.onYouTubeIframeAPIReady = function() {
 
                 Player = new YT.Player('youtube-player-iframe', {
+                    width: null,
+                    height: null,
                     videoId: daOptions.videoId,
                     playerVars: {
                         'controls': daOptions.playerVars.controls,
@@ -43,25 +49,31 @@
 
             }
 
+            // HIDE THE YOUTUBE IFRAME IF ADAPTIVE VIDEO IS TURNED ON SO THAT USERS DON'T SEE THE IFRAME BEING RESIZED
             if (daOptions.adaptiveVid) {
                 $youtubeIframe.css('opacity', 0);
             }
 
+            // AFTER YOUTUBE API HAS BEEN LODED
             function onPlayerReady() {
+                // TURN ON ADAPTIVE VIDEO IF USER HAS SELECTED IT
                 if (daOptions.adaptiveVid) {
                     turnOnAdaptiveVid();
                 }
             }
 
+            // ON PLAYER STATE CHANGE
             function onPlayerStateChange() {
 
             }
 
+            // ADPATIVE VIDEO STUFF
             function turnOnAdaptiveVid() {
 
                 $youtubeIframe = $('#youtube-player-iframe');
-                $adaptiveEl = $(window);
+                $adaptiveEl = $(daOptions.adaptiveVidParent);
 
+                // LOOP THROUGH IFRAME IFRAME AND SET THE ASPECT RATIO BASED ON THE IFRAME'S DEFAULT WIDTH AND HEIGHT
                 $youtubeIframe.each(function() {
                     $(this)
                         .attr('data-aspectratio', this.height / this.width)
@@ -69,18 +81,24 @@
                         .removeAttr('height width')
                 });
 
+                // RESIZE IFRAME FUNCTION
                 function resizeIframe() {
 
+                    // NEW WIDTH BASED ON IFRAME'S ORIGINAL WIDTH AND THE DESIRED DIMENSIONS
                     var newWidth = $adaptiveEl.width() * daOptions.adaptiveVidDimensions;
+                    // NEW HEIGHT BASED ON IFRAME'S ORIGINAL HEIGHT AND THE DESIRED DIMENSIONS
                     var newHeight = $adaptiveEl.height() * daOptions.adaptiveVidDimensions;
 
-                    if ( ($adaptiveEl.height() / $adaptiveEl.width()) > 0.5625 ) {
+                    // RESIZE BASE ON WIDTH
+                    if ( ($adaptiveEl.height() / $adaptiveEl.width()) > $youtubeIframe.attr('data-aspectratio') ) {
                         $youtubeIframe.each(function() {
                             var $thisEl = $(this);
                             $thisEl
                                 .width(newWidth)
                                 .height(newWidth * $thisEl.attr('data-aspectratio'))
                         });
+
+                    // RESIZE BASE ON HEIGHT
                     } else {
                         $youtubeIframe.each(function() {
                             var $thisEl = $(this);
@@ -91,22 +109,45 @@
                     }
                 }
 
+                // CALL `resizeIframe` TO GET THE BALL ROLLING
                 resizeIframe();
 
+                // ONCE IFRAME HAS BEEN RESIZED, REVEAL THE IFRAME
                 $youtubeIframe.css('opacity', 1);
 
+                // RESIZE IFRAME SHOULD WORK WHEN THE WINDOW RESIZES
                 $adaptiveEl.on('resize.ytModal', function() {
                     resizeIframe();
                 });
 
             }
 
+            // OPTION TO TURN OFF ADAPTIVE VIDEO DYNAMICALLY
             function turnOffAdaptiveVid() {
                 $adaptiveEl.off('resize.ytModal');
             }
 
         }
 
+
+        /*------------------------------------*\
+          PLAYBACK CONTROLS
+        \*------------------------------------*/
+        CustomYouTubePlayer.prototype.playVideo = function() {
+            Player.playVideo();
+        }
+
+        CustomYouTubePlayer.prototype.stopVideo = function() {
+            Player.stopVideo();
+        }
+
+        CustomYouTubePlayer.prototype.pauseVideo = function() {
+            Player.pauseVideo();
+        }
+
+
+
+        // RETURN `CustomYouTubePlayer` SO THAT IT CAN BE INSTANTIATED
         return CustomYouTubePlayer;
 
     })();

@@ -8,9 +8,20 @@
 </head>
 <body>
 
-<div class="youtube-player-wrapper">
-    <div id="youtube-player-iframe" class="youtube-player-iframe"></div>    
+<div class="easy-peasy-modal">
+
+    <a href="#" class="easy-peasy-modal__close">
+        Close
+    </a>
+
+    <div class="easy-peasy-modal__wrapper">
+        <div class="youtube-player-wrapper">
+            <div id="youtube-player-iframe" class="youtube-player-iframe"></div>    
+        </div>
+    </div>
 </div>
+
+
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
@@ -21,11 +32,14 @@
 
 var newCustomYouTubePlayer = new CustomYouTubePlayer({
     adaptiveVid: true,
+    adaptiveVidParent: window,
     adaptiveVidDimensions: 0.9,
     videoId: 'F-eMt3SrfFU'
 });
 
-
+document.querySelector('.easy-peasy-modal__close').addEventListener('click', function() {
+    newCustomYouTubePlayer.stopVideo();
+}, false)
 
 
 
