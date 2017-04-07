@@ -38,3 +38,7 @@ newCustomYouTubePlayer.stopVideo();
 ```js
 newCustomYouTubePlayer.pauseVideo();
 ```
+
+
+## Licensing
+The Custom YouTube Player project is released under the "Be Chill" license. There are no restrictions on this plugin so long as you're chill.
