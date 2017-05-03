@@ -9,14 +9,41 @@
 <body>
 
 
-
-<div id="youtube-player-iframe"></div>
+<div class="easy-peasy-modal is-visible">
+    <a href="#" class="easy-peasy-modal__close">
+        Close
+    </a>
+    <div class="easy-peasy-modal__wrapper">
+        <div class="youtube-player-wrapper">
+            <div id="youtube-player-iframe" class="youtube-player-iframe"></div>    
+        </div>
+    </div>
+</div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src="ExtendYouTubePlayer.js"></script>
 
 <script>
+
+
+var newCustomYouTubePlayer = new CustomYouTubePlayer({
+    native: {
+        videoId: 'F-eMt3SrfFU'
+    },
+    extend: {
+        adaptiveVid: true,
+        adaptiveVidParent: window,
+        adaptiveVidDimensions: 0.9,
+        onVidEnd: function() {
+            $('.easy-peasy-modal').removeClass('is-visible');
+        }
+    }
+});
+
+document.querySelector('.easy-peasy-modal__close').addEventListener('click', function() {
+    newCustomYouTubePlayer.Player.pauseVideo();
+}, false)
 
 
 
