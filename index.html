@@ -23,7 +23,7 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-<script src="ExtendYouTubePlayer.js"></script>
+<script src="CustomYouTubePlayer.js"></script>
 
 <script>
 
@@ -43,13 +43,17 @@ var newCustomYouTubePlayer = new CustomYouTubePlayer({
     }
 });
 
-document.querySelector('.easy-peasy-modal__open').addEventListener('click', function() {
+
+document.querySelector('.easy-peasy-modal__open').addEventListener('click', function(e) {
+    e.preventDefault();
     $('.easy-peasy-modal').addClass('is-visible');
     newCustomYouTubePlayer.Player.playVideo();
 }, false);
 
-document.querySelector('.easy-peasy-modal__close').addEventListener('click', function() {
+document.querySelector('.easy-peasy-modal__close').addEventListener('click', function(e) {
+    e.preventDefault();
     newCustomYouTubePlayer.Player.pauseVideo();
+    $('.easy-peasy-modal').removeClass('is-visible');
 }, false)
 
 

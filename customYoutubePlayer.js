@@ -146,7 +146,20 @@
         
     })(); // END `CustomYouTubePlayer` IIFE
 
-    // SET GLOBAL
+
+    /*------------------------------------*\
+      EXPORT OPTIONS
+    \*------------------------------------*/
+    // if (typeof define === 'function' && define.amd) {
+    //     define([], function() {
+    //         return CustomYouTubePlayer;
+    //     });
+    // } else if (typeof exports !== "undefined" && exports !== null) {
+    //     module.exports = CustomYouTubePlayer;
+    // } else {
+    //     window.CustomYouTubePlayer = CustomYouTubePlayer;
+    // }
+
     window.CustomYouTubePlayer = CustomYouTubePlayer;
 
 }).call(this);
