@@ -8,12 +8,12 @@
 </head>
 <body>
 
-<div class="easy-peasy-modal is-visible">
+<a href="#" class="easy-peasy-modal__open">Open</a>
 
+<div class="easy-peasy-modal">
     <a href="#" class="easy-peasy-modal__close">
         Close
     </a>
-
     <div class="easy-peasy-modal__wrapper">
         <div class="youtube-player-wrapper">
             <div id="youtube-player-iframe" class="youtube-player-iframe"></div>    
@@ -22,20 +22,18 @@
 </div>
 
 
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-<script src="script.js"></script>
-<script src="customYouTubePlayer.js"></script>
+<script src="ExtendYouTubePlayer.js"></script>
 
 <script>
+
 
 var newCustomYouTubePlayer = new CustomYouTubePlayer({
     // `events.onReady` AND `events.onStateChange` ARE THE ONLY ONES THAT SHOULDN'T BE OVERWRITTEN
     native: {
         videoId: 'F-eMt3SrfFU'
     },
-    custom: {
+    extend: {
         adaptiveVid: true,
         adaptiveVidParent: window,
         adaptiveVidDimensions: 0.9,
@@ -45,9 +43,13 @@ var newCustomYouTubePlayer = new CustomYouTubePlayer({
     }
 });
 
+document.querySelector('.easy-peasy-modal__open').addEventListener('click', function() {
+    $('.easy-peasy-modal').addClass('is-visible');
+    newCustomYouTubePlayer.Player.playVideo();
+}, false);
+
 document.querySelector('.easy-peasy-modal__close').addEventListener('click', function() {
-    // newCustomYouTubePlayer.playVideo();
-    newCustomYouTubePlayer.pauseVideo();
+    newCustomYouTubePlayer.Player.pauseVideo();
 }, false)
 
 
