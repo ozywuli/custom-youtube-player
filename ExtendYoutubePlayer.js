@@ -12,7 +12,6 @@
     var $youtubeIframe = $('#youtube-player-iframe');
     var $adaptiveEl;
 
-
     // IIFE
     CustomYouTubePlayer = (function() {
 
@@ -27,12 +26,92 @@
 
 
             /*------------------------------------*\
+              CUSTOM METHODS
+            \*------------------------------------*/
+            self.customMethods = {
+                onPlayerReady: function() {
+                    // TURN ON ADAPTIVE VIDEO IF USER HAS SELECTED IT
+                    if (combinedExtendOptions.adaptiveVid) {
+                        self.customMethods.turnOnAdaptiveVid();
+                    }
+                },
+
+                onPlayerStateChange: function() {
+                    var playerState = self.Player.getPlayerState()
+                    
+                    // WHEN THE VIDEO HAS ENDED
+                    if (playerState === 0) {
+                        combinedExtendOptions.onVidEnd();
+                    }
+                },
+
+                // OPTION TO TURN OFF ADAPTIVE VIDEO DYNAMICALLY
+                turnOffAdaptiveVid: function() {
+                    $adaptiveEl.off('resize.ytModal');
+                },
+
+                // ADPATIVE VIDEO STUFF
+                turnOnAdaptiveVid: function() {
+                    $youtubeIframe = $('#youtube-player-iframe');
+                    $adaptiveEl = $(combinedExtendOptions.adaptiveVidParent);
+
+                    // LOOP THROUGH IFRAME IFRAME AND SET THE ASPECT RATIO BASED ON THE IFRAME'S DEFAULT WIDTH AND HEIGHT
+                    $youtubeIframe.each(function() {
+                        $(this)
+                            .attr('data-aspectratio', this.height / this.width)
+                            .attr('data-aspectratio-h', this.width / this.height)
+                            .removeAttr('height width')
+                    });
+
+                    // RESIZE IFRAME FUNCTION
+                    function resizeIframe() {
+
+                        // NEW WIDTH BASED ON IFRAME'S ORIGINAL WIDTH AND THE DESIRED DIMENSIONS
+                        var newWidth = $adaptiveEl.width() * combinedExtendOptions.adaptiveVidDimensions;
+                        // NEW HEIGHT BASED ON IFRAME'S ORIGINAL HEIGHT AND THE DESIRED DIMENSIONS
+                        var newHeight = $adaptiveEl.height() * combinedExtendOptions.adaptiveVidDimensions;
+
+                        // RESIZE BASE ON WIDTH
+                        if ( ($adaptiveEl.height() / $adaptiveEl.width()) > $youtubeIframe.attr('data-aspectratio') ) {
+                            $youtubeIframe.each(function() {
+                                var $thisEl = $(this);
+                                $thisEl
+                                    .width(newWidth)
+                                    .height(newWidth * $thisEl.attr('data-aspectratio'))
+                            });
+
+                        // RESIZE BASE ON HEIGHT
+                        } else {
+                            $youtubeIframe.each(function() {
+                                var $thisEl = $(this);
+                                $thisEl
+                                    .width(newHeight * $thisEl.attr('data-aspectratio-h'))
+                                    .height(newHeight)
+                            });
+                        }
+                    }
+
+                    // CALL `resizeIframe` TO GET THE BALL ROLLING
+                    resizeIframe();
+
+                    // ONCE IFRAME HAS BEEN RESIZED, REVEAL THE IFRAME
+                    $youtubeIframe.css('opacity', 1);
+
+                    // RESIZE IFRAME SHOULD WORK WHEN THE WINDOW RESIZES
+                    $adaptiveEl.on('resize.ytModal', function() {
+                        resizeIframe();
+                    });
+                }
+            }
+
+
+            /*------------------------------------*\
               NATIVE YOUTUBE IFRAME API
             \*------------------------------------*/
             var defaultNativeOptions = {
                 events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onReady': self.customMethods.onPlayerReady,
+                    'onStateChange': self.customMethods.onPlayerStateChange
                 }
             }
 
@@ -55,99 +134,17 @@
 
             var combinedExtendOptions = $.extend(defaultExtendOptions, userOptions.extend);
 
-
-            /*------------------------------------*\
-              CUSTOM METHODS
-            \*------------------------------------*/
             // HIDE THE YOUTUBE IFRAME IF ADAPTIVE VIDEO IS TURNED ON SO THAT USERS DON'T SEE THE IFRAME BEING RESIZED
             if (combinedExtendOptions.adaptiveVid) {
                 $youtubeIframe.css('opacity', 0);
             }
-            
-            function onPlayerReady() {
-                // TURN ON ADAPTIVE VIDEO IF USER HAS SELECTED IT
-                if (combinedExtendOptions.adaptiveVid) {
-                    turnOnAdaptiveVid();
-                }
-            }
 
-            function onPlayerStateChange() {
-                var playerState = self.Player.getPlayerState()
-                
-                // WHEN THE VIDEO HAS ENDED
-                if (playerState === 0) {
-                    combinedExtendOptions.onVidEnd();
-                }
-            }
-
-            // ADPATIVE VIDEO STUFF
-            function turnOnAdaptiveVid() {
-
-                $youtubeIframe = $('#youtube-player-iframe');
-                $adaptiveEl = $(combinedExtendOptions.adaptiveVidParent);
-
-                // LOOP THROUGH IFRAME IFRAME AND SET THE ASPECT RATIO BASED ON THE IFRAME'S DEFAULT WIDTH AND HEIGHT
-                $youtubeIframe.each(function() {
-                    $(this)
-                        .attr('data-aspectratio', this.height / this.width)
-                        .attr('data-aspectratio-h', this.width / this.height)
-                        .removeAttr('height width')
-                });
-
-                // RESIZE IFRAME FUNCTION
-                function resizeIframe() {
-
-                    // NEW WIDTH BASED ON IFRAME'S ORIGINAL WIDTH AND THE DESIRED DIMENSIONS
-                    var newWidth = $adaptiveEl.width() * combinedExtendOptions.adaptiveVidDimensions;
-                    // NEW HEIGHT BASED ON IFRAME'S ORIGINAL HEIGHT AND THE DESIRED DIMENSIONS
-                    var newHeight = $adaptiveEl.height() * combinedExtendOptions.adaptiveVidDimensions;
-
-                    // RESIZE BASE ON WIDTH
-                    if ( ($adaptiveEl.height() / $adaptiveEl.width()) > $youtubeIframe.attr('data-aspectratio') ) {
-                        $youtubeIframe.each(function() {
-                            var $thisEl = $(this);
-                            $thisEl
-                                .width(newWidth)
-                                .height(newWidth * $thisEl.attr('data-aspectratio'))
-                        });
-
-                    // RESIZE BASE ON HEIGHT
-                    } else {
-                        $youtubeIframe.each(function() {
-                            var $thisEl = $(this);
-                            $thisEl
-                                .width(newHeight * $thisEl.attr('data-aspectratio-h'))
-                                .height(newHeight)
-                        });
-                    }
-                }
-
-                // CALL `resizeIframe` TO GET THE BALL ROLLING
-                resizeIframe();
-
-                // ONCE IFRAME HAS BEEN RESIZED, REVEAL THE IFRAME
-                $youtubeIframe.css('opacity', 1);
-
-                // RESIZE IFRAME SHOULD WORK WHEN THE WINDOW RESIZES
-                $adaptiveEl.on('resize.ytModal', function() {
-                    resizeIframe();
-                });
-
-            }
-
-            // OPTION TO TURN OFF ADAPTIVE VIDEO DYNAMICALLY
-            function turnOffAdaptiveVid() {
-                $adaptiveEl.off('resize.ytModal');
-            }
-
-
-
-        }
+        } // END `CustomYouTubePlayer()`
 
         // RETURN
         return CustomYouTubePlayer;
         
-    })();
+    })(); // END `CustomYouTubePlayer` IIFE
 
     // SET GLOBAL
     window.CustomYouTubePlayer = CustomYouTubePlayer;
