@@ -31,18 +31,24 @@
 <script>
 
 var newCustomYouTubePlayer = new CustomYouTubePlayer({
-    videoId: 'F-eMt3SrfFU',
-
-    adaptiveVid: true,
-    adaptiveVidParent: window,
-    adaptiveVidDimensions: 0.9,
-    onVidEnd: function() {
-        $('.easy-peasy-modal').removeClass('is-visible');
+    // `events.onReady` AND `events.onStateChange` ARE THE ONLY ONES THAT SHOULDN'T BE OVERWRITTEN
+    native: {
+        videoId: 'F-eMt3SrfFU'
+    },
+    custom: {
+        adaptiveVid: true,
+        adaptiveVidParent: window,
+        adaptiveVidDimensions: 0.9,
+        onVidEnd: function() {
+            $('.easy-peasy-modal').removeClass('is-visible');
+        }
     }
 });
 
 document.querySelector('.easy-peasy-modal__close').addEventListener('click', function() {
     // newCustomYouTubePlayer.playVideo();
+
+    newCustomYouTubePlayer.pauseVideo();
 
     // $(newCustomYouTubePlayer).trigger('test');
 }, false)

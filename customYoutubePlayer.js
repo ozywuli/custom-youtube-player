@@ -15,15 +15,19 @@
 
         function CustomYouTubePlayer(userOptions) {
 
-            var defaultOptions = {
-                width: null,
-                height: null,
-                videoId: 'dQw4w9WgXcQ',
-                playerVars: {
-                    controls: true,
-                    start: 0
-                },
+            console.log(userOptions.native);
 
+            var defaultNativeOptions = {
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            }
+
+            var daNativeOptions = $.extend(defaultNativeOptions, userOptions.native);
+
+
+            var defaultCustomOptions = {
                 adaptiveVid: true,
                 adaptiveVidParent: window,
                 adaptiveVidDimensions: 0.9,
@@ -31,35 +35,23 @@
             }
 
             // https://api.jquery.com/jquery.extend/
-            var daOptions = $.extend(defaultOptions, userOptions);
+            var daCustomOptions = $.extend(defaultCustomOptions, userOptions.custom);
 
             window.onYouTubeIframeAPIReady = function() {
 
-                Player = new YT.Player('youtube-player-iframe', {
-                    width: null,
-                    height: null,
-                    videoId: daOptions.videoId,
-                    playerVars: {
-                        'controls': daOptions.playerVars.controls,
-                        'start': daOptions.playerVars.start
-                    },
-                    events: {
-                        'onReady': onPlayerReady,
-                        'onStateChange': onPlayerStateChange
-                    }
-                });
+                Player = new YT.Player('youtube-player-iframe', defaultNativeOptions);
 
             }
 
             // HIDE THE YOUTUBE IFRAME IF ADAPTIVE VIDEO IS TURNED ON SO THAT USERS DON'T SEE THE IFRAME BEING RESIZED
-            if (daOptions.adaptiveVid) {
+            if (daCustomOptions.adaptiveVid) {
                 $youtubeIframe.css('opacity', 0);
             }
 
             // AFTER YOUTUBE API HAS BEEN LODED
             function onPlayerReady() {
                 // TURN ON ADAPTIVE VIDEO IF USER HAS SELECTED IT
-                if (daOptions.adaptiveVid) {
+                if (daCustomOptions.adaptiveVid) {
                     turnOnAdaptiveVid();
                 }
             }
@@ -76,7 +68,7 @@
                     // http://stackoverflow.com/questions/1553342/custom-event-in-jquery-that-isnt-bound-to-a-dom-element#comment1417316_1556914
                     // http://stackoverflow.com/questions/4942639/add-event-to-jquery-plugin
                     // TRIGGER THE `onVidEnd` CALLBACK
-                    daOptions.onVidEnd();
+                    daCustomOptions.onVidEnd();
                 }
 
             }
@@ -85,7 +77,7 @@
             function turnOnAdaptiveVid() {
 
                 $youtubeIframe = $('#youtube-player-iframe');
-                $adaptiveEl = $(daOptions.adaptiveVidParent);
+                $adaptiveEl = $(daCustomOptions.adaptiveVidParent);
 
                 // LOOP THROUGH IFRAME IFRAME AND SET THE ASPECT RATIO BASED ON THE IFRAME'S DEFAULT WIDTH AND HEIGHT
                 $youtubeIframe.each(function() {
@@ -99,9 +91,9 @@
                 function resizeIframe() {
 
                     // NEW WIDTH BASED ON IFRAME'S ORIGINAL WIDTH AND THE DESIRED DIMENSIONS
-                    var newWidth = $adaptiveEl.width() * daOptions.adaptiveVidDimensions;
+                    var newWidth = $adaptiveEl.width() * daCustomOptions.adaptiveVidDimensions;
                     // NEW HEIGHT BASED ON IFRAME'S ORIGINAL HEIGHT AND THE DESIRED DIMENSIONS
-                    var newHeight = $adaptiveEl.height() * daOptions.adaptiveVidDimensions;
+                    var newHeight = $adaptiveEl.height() * daCustomOptions.adaptiveVidDimensions;
 
                     // RESIZE BASE ON WIDTH
                     if ( ($adaptiveEl.height() / $adaptiveEl.width()) > $youtubeIframe.attr('data-aspectratio') ) {
