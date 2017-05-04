@@ -1,6 +1,6 @@
 Custom YouTube Player
 =======
-This jQuery plugin augments the (YouTube Iframe API)[https://developers.google.com/youtube/iframe_api_reference] with additional capabilities like [adaptive sizing](https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php), video event callbacks, and custom appearance for player controls. 
+This jQuery plugin augments the [YouTube Iframe API](https://developers.google.com/youtube/iframe_api_reference) with additional capabilities like [adaptive sizing](https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php), video event callbacks, and custom appearance for player controls. 
 
 Getting Started
 ======
@@ -17,7 +17,7 @@ The following elements are required on your page:
 
 ### Initialization
 
-Then initialize your Custom YouTube Player. Below are some example options. The `native` object accepts any options listed in the (YouTube Iframe API)[https://developers.google.com/youtube/iframe_api_reference]. The `extend` object holds options for augmented video capabilities like adaptive sizing, video event callbacks, and custom appearance for player controls.
+Then initialize your Custom YouTube Player. Below are some example options. The `native` object accepts any options listed in the [YouTube Iframe API](https://developers.google.com/youtube/iframe_api_reference). The `extend` object holds options for augmented video capabilities like adaptive sizing, video event callbacks, and custom appearance for player controls.
 
 ```js
 var newCustomYouTubePlayer = new CustomYouTubePlayer({
