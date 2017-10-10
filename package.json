@@ -1,0 +1,19 @@
+{
+  "name": "custom-youtube-player",
+  "version": "1.0.0",
+  "description": "Custom YouTube Player ======= This jQuery plugin augments the (YouTube Iframe API)[https://developers.google.com/youtube/iframe_api_reference] with additional capabilities like [adaptive sizing](https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php), video event callbacks, and custom appearance for player controls.",
+  "main": "customYoutubePlayer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ozywuli/custom-youtube-player.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ozywuli/custom-youtube-player/issues"
+  },
+  "homepage": "https://github.com/ozywuli/custom-youtube-player#readme"
+}
