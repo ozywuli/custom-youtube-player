@@ -1,24 +1,30 @@
 ;(function() {
 
-    // ADD YOUTUBE IFRAME API SCRIPT
-    var tag = document.createElement('script');
-    tag.id = 'youtube-iframe';
-    tag.src = 'https://www.youtube.com/iframe_api';
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    var videoId;
-    var $youtubeIframeWrapper = $('.youtube-player-wrapper');
-    var $youtubeIframe = $('#youtube-player-iframe');
-    var $adaptiveEl;
-
     // IIFE
     CustomYouTubePlayer = (function() {
+
 
         /*------------------------------------*\
           CUSTOM YOUTUBE IFRAME API
         \*------------------------------------*/
         function CustomYouTubePlayer(userOptions) {
+            
+            // ADD YOUTUBE IFRAME API SCRIPT
+            if (!document.getElementById('youtube-iframe')) {
+                var tag = document.createElement('script');
+                tag.id = 'youtube-iframe';
+                tag.src = 'https://www.youtube.com/iframe_api';
+                var firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            }
+
+            var videoId;
+            var $youtubeIframeWrapper = $('.youtube-player-wrapper');
+            var $youtubeIframe = $('#youtube-player-iframe');
+            var $adaptiveEl;
+
+
+            // SELF
             var self = this;
 
             // YOUTUBE IFRAME API PLAYER
@@ -101,8 +107,10 @@
                     $adaptiveEl.on('resize.ytModal', function() {
                         resizeIframe();
                     });
-                }
+                },
+
             }
+
 
 
             /*------------------------------------*\
