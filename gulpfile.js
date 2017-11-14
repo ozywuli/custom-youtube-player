@@ -35,7 +35,7 @@ function showError(arg) {
 }
 
 gulp.task('build:scss', () => {
-  return gulp.src(path.join('examples', 'assets', 'styles.scss'))
+  return gulp.src(path.join('demos', 'assets', 'styles.scss'))
     .pipe(sass({
       outputStyle: 'nested',
       precision: 10,
@@ -50,7 +50,7 @@ gulp.task('build:scss', () => {
         browsers: ['last 2 versions', 'Firefox ESR', 'Explorer >= 9', 'Android >= 4.0', '> 2%']
       })
     ]))
-    .pipe(gulp.dest(path.join('examples', 'assets')))
+    .pipe(gulp.dest(path.join('demos', 'assets')))
     .pipe(browsersync.stream({match: '**/*.css'}))
 })
 
@@ -76,13 +76,13 @@ gulp.task('watch', ['build'], () => {
     notify: false,
     port: 9000,
     server: {
-      baseDir: [path.join('examples', 'pages'), path.join('examples', 'assets'), 'dist'],
+      baseDir: [path.join('demos', 'pages'), path.join('demos', 'assets'), 'dist'],
       directory: true
     }
   })
    gulp.watch(path.join('src', '*.js'), ['build:js'])
-   gulp.watch(path.join('examples', 'assets', '*.scss'), ['build:scss'])
-   gulp.watch(path.join('examples', 'pages', '*.html'), browsersync.reload)
+   gulp.watch(path.join('demos', 'assets', '*.scss'), ['build:scss'])
+   gulp.watch(path.join('demos', 'pages', '*.html'), browsersync.reload)
 })
 
 gulp.task('default', ['watch'])
