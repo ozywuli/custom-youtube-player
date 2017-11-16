@@ -1,0 +1,18 @@
+{
+  "name": "custom-youtube-player",
+  "version": "0.0.3",
+  "homepage": "https://github.com/ozywuli/custom-youtube-player",
+  "authors": [
+    "ozywuli <ozy.wu.li@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

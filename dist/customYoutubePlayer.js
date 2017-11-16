@@ -4,7 +4,7 @@
 ;(function () {
 
     // IIFE
-    var CustomYouTubePlayer = function () {
+    var CustomYoutubePlayer = function () {
 
         /*------------------------------------*\
           CUSTOM YOUTUBE IFRAME API
@@ -20,10 +20,10 @@
                 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
             }
 
-            var videoId;
+            var videoId = void 0;
             var $youtubeIframeWrapper = $('.youtube-player-wrapper');
             var $youtubeIframe = $('#youtube-player-iframe');
-            var $adaptiveEl;
+            var $adaptiveEl = void 0;
 
             // SELF
             var self = this;
@@ -144,17 +144,15 @@
     /*------------------------------------*\
       EXPORT OPTIONS
     \*------------------------------------*/
-    // if (typeof define === 'function' && define.amd) {
-    //     define([], function() {
-    //         return CustomYouTubePlayer;
-    //     });
-    // } else if (typeof exports !== "undefined" && exports !== null) {
-    //     module.exports = CustomYouTubePlayer;
-    // } else {
-    //     window.CustomYouTubePlayer = CustomYouTubePlayer;
-    // }
-
-    window.CustomYouTubePlayer = CustomYouTubePlayer;
+    if (typeof define === 'function' && define.amd) {
+        define([], function () {
+            return CustomYoutubePlayer;
+        });
+    } else if (typeof exports !== "undefined" && exports !== null) {
+        module.exports = CustomYoutubePlayer;
+    } else {
+        window.CustomYoutubePlayer = CustomYoutubePlayer;
+    }
 }).call(undefined);
 
 },{}]},{},[1])(1)

@@ -1,7 +1,7 @@
 ;(function() {
 
     // IIFE
-    let CustomYouTubePlayer = (function() {
+    let CustomYoutubePlayer = (function() {
 
 
         /*------------------------------------*\
@@ -11,21 +11,21 @@
             
             // ADD YOUTUBE IFRAME API SCRIPT
             if (!document.getElementById('youtube-iframe')) {
-                var tag = document.createElement('script');
+                let tag = document.createElement('script');
                 tag.id = 'youtube-iframe';
                 tag.src = 'https://www.youtube.com/iframe_api';
-                var firstScriptTag = document.getElementsByTagName('script')[0];
+                let firstScriptTag = document.getElementsByTagName('script')[0];
                 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
             }
 
-            var videoId;
-            var $youtubeIframeWrapper = $('.youtube-player-wrapper');
-            var $youtubeIframe = $('#youtube-player-iframe');
-            var $adaptiveEl;
+            let videoId;
+            let $youtubeIframeWrapper = $('.youtube-player-wrapper');
+            let $youtubeIframe = $('#youtube-player-iframe');
+            let $adaptiveEl;
 
 
             // SELF
-            var self = this;
+            let self = this;
 
             // YOUTUBE IFRAME API PLAYER
             this.Player = undefined;
@@ -43,7 +43,7 @@
                 },
 
                 onPlayerStateChange: function() {
-                    var playerState = self.Player.getPlayerState()
+                    let playerState = self.Player.getPlayerState()
                     
                     // WHEN THE VIDEO HAS ENDED
                     if (playerState === 0) {
@@ -73,14 +73,14 @@
                     function resizeIframe() {
 
                         // NEW WIDTH BASED ON IFRAME'S ORIGINAL WIDTH AND THE DESIRED DIMENSIONS
-                        var newWidth = $adaptiveEl.width() * combinedExtendOptions.adaptiveVidDimensions;
+                        let newWidth = $adaptiveEl.width() * combinedExtendOptions.adaptiveVidDimensions;
                         // NEW HEIGHT BASED ON IFRAME'S ORIGINAL HEIGHT AND THE DESIRED DIMENSIONS
-                        var newHeight = $adaptiveEl.height() * combinedExtendOptions.adaptiveVidDimensions;
+                        let newHeight = $adaptiveEl.height() * combinedExtendOptions.adaptiveVidDimensions;
 
                         // RESIZE BASE ON WIDTH
                         if ( ($adaptiveEl.height() / $adaptiveEl.width()) > $youtubeIframe.attr('data-aspectratio') ) {
                             $youtubeIframe.each(function() {
-                                var $thisEl = $(this);
+                                let $thisEl = $(this);
                                 $thisEl
                                     .width(newWidth)
                                     .height(newWidth * $thisEl.attr('data-aspectratio'))
@@ -89,7 +89,7 @@
                         // RESIZE BASE ON HEIGHT
                         } else {
                             $youtubeIframe.each(function() {
-                                var $thisEl = $(this);
+                                let $thisEl = $(this);
                                 $thisEl
                                     .width(newHeight * $thisEl.attr('data-aspectratio-h'))
                                     .height(newHeight)
@@ -116,14 +116,14 @@
             /*------------------------------------*\
               NATIVE YOUTUBE IFRAME API
             \*------------------------------------*/
-            var defaultNativeOptions = {
+            let defaultNativeOptions = {
                 events: {
                     'onReady': self.customMethods.onPlayerReady,
                     'onStateChange': self.customMethods.onPlayerStateChange
                 }
             }
 
-            var combinedNativeOptions = $.extend(defaultNativeOptions, userOptions.native)
+            let combinedNativeOptions = $.extend(defaultNativeOptions, userOptions.native)
 
             window.onYouTubeIframeAPIReady = function() {
                 self.Player = new YT.Player('youtube-player-iframe', combinedNativeOptions);
@@ -133,14 +133,14 @@
             /*------------------------------------*\
               EXTENDED YOUTUBE IFRAME API
             \*------------------------------------*/
-            var defaultExtendOptions = {
+            let defaultExtendOptions = {
                 adaptiveVid: true,
                 adaptiveVidParent: window,
                 adaptiveVidDimensions: 0.9,
                 onVidEnd: null
             }
 
-            var combinedExtendOptions = $.extend(defaultExtendOptions, userOptions.extend);
+            let combinedExtendOptions = $.extend(defaultExtendOptions, userOptions.extend);
 
             // HIDE THE YOUTUBE IFRAME IF ADAPTIVE VIDEO IS TURNED ON SO THAT USERS DON'T SEE THE IFRAME BEING RESIZED
             if (combinedExtendOptions.adaptiveVid) {
@@ -158,16 +158,14 @@
     /*------------------------------------*\
       EXPORT OPTIONS
     \*------------------------------------*/
-    // if (typeof define === 'function' && define.amd) {
-    //     define([], function() {
-    //         return CustomYouTubePlayer;
-    //     });
-    // } else if (typeof exports !== "undefined" && exports !== null) {
-    //     module.exports = CustomYouTubePlayer;
-    // } else {
-    //     window.CustomYouTubePlayer = CustomYouTubePlayer;
-    // }
-
-    window.CustomYouTubePlayer = CustomYouTubePlayer;
+    if (typeof define === 'function' && define.amd) {
+        define([], function() {
+            return CustomYoutubePlayer;
+        });
+    } else if (typeof exports !== "undefined" && exports !== null) {
+        module.exports = CustomYoutubePlayer;
+    } else {
+        window.CustomYoutubePlayer = CustomYoutubePlayer;
+    }
 
 }).call(this);
