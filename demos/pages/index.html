@@ -26,12 +26,12 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-<script src="CustomYoutubePlayer.js"></script>
+<script src="customYoutubePlayer.js"></script>
 
 <script>
 
 
-var newCustomYouTubePlayer = new CustomYouTubePlayer({
+var newCustomYouTubePlayer = new CustomYoutubePlayer({
     // `events.onReady` AND `events.onStateChange` ARE THE ONLY ONES THAT SHOULDN'T BE OVERWRITTEN
     native: {
         videoId: 'F-eMt3SrfFU'
@@ -40,6 +40,9 @@ var newCustomYouTubePlayer = new CustomYouTubePlayer({
         adaptiveVid: true,
         adaptiveVidParent: window,
         adaptiveVidDimensions: 0.9,
+        onVidReady: function() {
+            console.log('player ready');
+        },
         onVidEnd: function() {
             $('.easy-peasy-modal').removeClass('is-visible');
         }

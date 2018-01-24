@@ -39,6 +39,7 @@
                     // TURN ON ADAPTIVE VIDEO IF USER HAS SELECTED IT
                     if (combinedExtendOptions.adaptiveVid) {
                         self.customMethods.turnOnAdaptiveVid();
+                        combinedExtendOptions.onVidReady();
                     }
                 },
 
@@ -157,15 +158,8 @@
 
     /*------------------------------------*\
       EXPORT OPTIONS
-    \*------------------------------------*/
-    if (typeof define === 'function' && define.amd) {
-        define([], function() {
-            return CustomYoutubePlayer;
-        });
-    } else if (typeof exports !== "undefined" && exports !== null) {
-        module.exports = CustomYoutubePlayer;
-    } else {
-        window.CustomYoutubePlayer = CustomYoutubePlayer;
-    }
+    \*------------------------------------*/    
+    module.exports = CustomYoutubePlayer;
+
 
 }).call(this);
