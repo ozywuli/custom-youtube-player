@@ -8,6 +8,10 @@
           CUSTOM YOUTUBE IFRAME API
         \*------------------------------------*/
         function CustomYouTubePlayer(userOptions) {
+
+            let customYoutubePlayerState = {
+                videoWasPlaying: false,
+            }
             
             // ADD YOUTUBE IFRAME API SCRIPT
             if (!document.getElementById('youtube-iframe')) {
@@ -138,7 +142,8 @@
                 adaptiveVid: true,
                 adaptiveVidParent: window,
                 adaptiveVidDimensions: 0.9,
-                onVidEnd: null
+                onVidEnd: null,
+                enableLoseFocus: false,
             }
 
             let combinedExtendOptions = $.extend(defaultExtendOptions, userOptions.extend);
@@ -147,6 +152,49 @@
             if (combinedExtendOptions.adaptiveVid) {
                 $youtubeIframe.css('opacity', 0);
             }
+
+            /*------------------------------------*\
+              Window blur events
+            \*------------------------------------*/
+            let blur = () => {
+                // console.log('blur');
+                // if video is playing
+                if (this.Player.getPlayerState() === 1) {
+                    this.Player.pauseVideo()
+                    customYoutubePlayerState.videoWasPlaying = true;
+                }
+            }
+
+            if (combinedExtendOptions.enableLoseFocus) {
+                window.addEventListener('blur', blur);
+            }
+
+            $('.youtube-player-wrapper').on('mouseover', () => {
+                // console.log('mouseover');
+                if (combinedExtendOptions.enableLoseFocus) {
+                    window.removeEventListener('blur', blur)
+                }
+            });
+
+            $('.youtube-player-wrapper').on('mouseout', () => {
+                // console.log('mouseout');
+                if (combinedExtendOptions.enableLoseFocus) {
+                    window.addEventListener('blur', blur);
+                }
+            });
+
+            if (combinedExtendOptions.enableLoseFocus) {
+                document.addEventListener("visibilitychange", () => {
+                    // console.log(document.hidden, document.visibilityState);
+                    if (document.hidden) {
+                        if (this.Player.getPlayerState() === 1) {
+                            this.Player.pauseVideo()
+                            customYoutubePlayerState.videoWasPlaying = true;
+                        }
+                    }
+                }, false);
+            }
+
 
         } // END `CustomYouTubePlayer()`
 

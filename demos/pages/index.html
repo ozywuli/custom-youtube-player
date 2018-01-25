@@ -39,7 +39,8 @@ var newCustomYouTubePlayer = new CustomYoutubePlayer({
     extend: {
         adaptiveVid: true,
         adaptiveVidParent: window,
-        adaptiveVidDimensions: 0.9,
+        adaptiveVidDimensions: 1,
+        enableLoseFocus: true,
         onVidReady: function() {
             console.log('player ready');
         },

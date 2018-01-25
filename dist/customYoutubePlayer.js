@@ -10,9 +10,13 @@
           CUSTOM YOUTUBE IFRAME API
         \*------------------------------------*/
         function CustomYouTubePlayer(userOptions) {
+            var _this = this;
 
-            // ADD YOUTUBE IFRAME API SCRIPT
-            if (!document.getElementById('youtube-iframe')) {
+            var customYoutubePlayerState = {
+                videoWasPlaying: false
+
+                // ADD YOUTUBE IFRAME API SCRIPT
+            };if (!document.getElementById('youtube-iframe')) {
                 var tag = document.createElement('script');
                 tag.id = 'youtube-iframe';
                 tag.src = 'https://www.youtube.com/iframe_api';
@@ -126,7 +130,8 @@
                 adaptiveVid: true,
                 adaptiveVidParent: window,
                 adaptiveVidDimensions: 0.9,
-                onVidEnd: null
+                onVidEnd: null,
+                enableLoseFocus: false
             };
 
             var combinedExtendOptions = $.extend(defaultExtendOptions, userOptions.extend);
@@ -134,6 +139,48 @@
             // HIDE THE YOUTUBE IFRAME IF ADAPTIVE VIDEO IS TURNED ON SO THAT USERS DON'T SEE THE IFRAME BEING RESIZED
             if (combinedExtendOptions.adaptiveVid) {
                 $youtubeIframe.css('opacity', 0);
+            }
+
+            /*------------------------------------*\
+              Window blur events
+            \*------------------------------------*/
+            var blur = function blur() {
+                // console.log('blur');
+                // if video is playing
+                if (_this.Player.getPlayerState() === 1) {
+                    _this.Player.pauseVideo();
+                    customYoutubePlayerState.videoWasPlaying = true;
+                }
+            };
+
+            if (combinedExtendOptions.enableLoseFocus) {
+                window.addEventListener('blur', blur);
+            }
+
+            $('.youtube-player-wrapper').on('mouseover', function () {
+                // console.log('mouseover');
+                if (combinedExtendOptions.enableLoseFocus) {
+                    window.removeEventListener('blur', blur);
+                }
+            });
+
+            $('.youtube-player-wrapper').on('mouseout', function () {
+                // console.log('mouseout');
+                if (combinedExtendOptions.enableLoseFocus) {
+                    window.addEventListener('blur', blur);
+                }
+            });
+
+            if (combinedExtendOptions.enableLoseFocus) {
+                document.addEventListener("visibilitychange", function () {
+                    // console.log(document.hidden, document.visibilityState);
+                    if (document.hidden) {
+                        if (_this.Player.getPlayerState() === 1) {
+                            _this.Player.pauseVideo();
+                            customYoutubePlayerState.videoWasPlaying = true;
+                        }
+                    }
+                }, false);
             }
         } // END `CustomYouTubePlayer()`
 
