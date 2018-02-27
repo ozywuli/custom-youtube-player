@@ -5,7 +5,6 @@
 
     // IIFE
     var CustomYoutubePlayer = function () {
-
         /*------------------------------------*\
           CUSTOM YOUTUBE IFRAME API
         \*------------------------------------*/
@@ -43,8 +42,10 @@
                     }
                 },
 
-                onPlayerStateChange: function onPlayerStateChange() {
+                onPlayerStateChange: function onPlayerStateChange(data) {
                     var playerState = self.Player.getPlayerState();
+
+                    combinedExtendOptions.onPlayerStateChange(data);
 
                     // WHEN THE VIDEO HAS ENDED
                     if (playerState === 0) {
